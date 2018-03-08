@@ -25,8 +25,14 @@ func iterate() {
         imageGenerator.requestedTimeToleranceAfter = kCMTimeZero
         imageGenerator.requestedTimeToleranceBefore = kCMTimeZero
         let time: CMTime = CMTimeMake(Int64(value), vidLength.timescale)
-        let imageRef = (try? imageGenerator.copyCGImage(at: time, actualTime: nil))
-        let thumbnail = UIImage(cgImage: imageRef!)
+        var imageRef: CGImage?
+        do {
+            imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+        } catch {
+            print(error)
+        }
+        guard let ref = imageRef else {return}
+        let thumbnail = UIImage(cgImage: ref)
         let image = UIImagePNGRepresentation(thumbnail)
         guard let urlToSave = URL(string: "\(playGorundDirectory)/images/frame_\(i).png") else {return}
         do {
