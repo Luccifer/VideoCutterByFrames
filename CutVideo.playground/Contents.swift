@@ -29,7 +29,11 @@ func iterate() {
         let thumbnail = UIImage(cgImage: imageRef!)
         let image = UIImagePNGRepresentation(thumbnail)
         guard let urlToSave = URL(string: "\(playGorundDirectory)/images/frame_\(i).png") else {return}
-        try! image?.write(to: urlToSave)
+        do {
+            try  image?.write(to: urlToSave)
+        } catch {
+            print(error)
+        }
         value += Int(step)
     }
 }
